@@ -8,7 +8,42 @@ export default function CreateTodo() {
 
   const trpc = api.useContext();
 
+  // Basic mutation
+  // const { mutate } = api.todo.create.useMutation({
+  //   onSettled: async () => {
+  //     await trpc.todo.all.invalidate();
+  //   },
+  // });
+
+  // Mutation с отлавливанием ошибок
   const { mutate } = api.todo.create.useMutation({
+    onMutate: async () => {
+      // предотвращаем рефетч
+      await trpc.todo.all.cancel();
+      //
+      const previousTodos = trpc.todo.all.getData();
+
+      trpc.todo.all.setData(undefined, (prev) => {
+        const optimisticTodo = {
+          id: "001",
+          text: newTodo,
+          done: false,
+        };
+        if (!prev) return [optimisticTodo];
+        return [...prev, optimisticTodo];
+      });
+
+      setNewTodo("");
+
+      return { previousTodos };
+    },
+
+    onError: (err, newTodo, context) => {
+      toast.error("An error occured when created todo");
+      setNewTodo(newTodo);
+      trpc.todo.all.setData(undefined, () => context?.previousTodos);
+    },
+
     onSettled: async () => {
       await trpc.todo.all.invalidate();
     },
