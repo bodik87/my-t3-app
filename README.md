@@ -1,5 +1,17 @@
 # Create T3 App
 
+- [] Довчити Next Auth
+- [] Довчити trpc
+- [] Довчити zod
+
+### Backend
+
+- [x] Update Prisma Schema -> prisma/schema.prisma -> npx prisma db push
+- [x] Add Email auth provider -> src/server/auth.ts
+- [x] Create TRPC router for Todos -> src/server/api/routes/todo.ts
+
+### Frontend
+
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
 ## What's next? How do I make an app with this?
