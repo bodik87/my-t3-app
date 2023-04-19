@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
-import type { Todo } from "../types";
-import { api } from "../utils/api";
+import { RouterOutputs, api } from "../utils/api";
 
+type Todo = RouterOutputs["todo"]["all"][number];
 type TodoProps = { todo: Todo }; // по сути этот тип приходит нам с бекенда и может обновляться автоматически благодаря trpc
 
 export default function Todo({ todo }: TodoProps) {
